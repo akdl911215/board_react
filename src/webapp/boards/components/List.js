@@ -47,8 +47,8 @@ const List = () => {
     }
 
     const modifyButton = (boardId) => {
-        sessionStorage.setItem('boardId', boardId)
-        navigate(`/read`)
+        // sessionStorage.setItem('boardId', boardId)
+        navigate(`/read/${boardId}`)
     }
 
 
@@ -66,7 +66,7 @@ const List = () => {
                         </div>
                         {
                             list?.map(el =>
-                                <div style={{display: 'flex'}}>
+                                <div style={{display: 'flex'}} key={el.id}>
                                     <input
                                         type="checkbox"
                                         onChange={() => setBoardId(el.id)}
@@ -81,7 +81,6 @@ const List = () => {
                 </div>
                 <div>
                     <button onClick={() => navigate('/register')}>작성</button>
-                    {/*<button onClick={() => navigate('/modify')}>수정</button>*/}
                     <button onClick={deleteButton}>삭제</button>
                 </div>
             </div>

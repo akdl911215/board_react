@@ -7,4 +7,6 @@ export const RegisterAPI = (board) => client.post(`${backUrl}/board/register`, J
 
 export const DeletedAPI = (id) => client.patch(`${backUrl}/board/remove`, id)
 
-export const ReadAPI = (id) => client.get(`${backUrl}/board/read/${id}`)
+export const ReadAPI = (id) =>  client.get(`${backUrl}/board/read/${id}`)
+
+export const ModifyAPI = (board) => client.patch(`${backUrl}/board/modify`, JSON.stringify(board))

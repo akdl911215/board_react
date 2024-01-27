@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {ReadAPI} from "../../api/BoardApi";
 
 const Read = () => {
     const navigate = useNavigate();
+    const { idx } = useParams();
 
     const [board, setBoard] = useState({
         title: '',
@@ -14,8 +15,17 @@ const Read = () => {
     const {title, content, writerEmail, writerName} = board
     useEffect(() => console.log(board), [board])
     useEffect(() => {
-        ReadAPI(sessionStorage.getItem('boardId'))
-            .then(res => console.log(res))
+        ReadAPI(idx)
+            .then(res => {
+                console.log('read res : ', res)
+
+                setBoard({
+                    title: res?.data?.title,
+                    content: res?.data?.content,
+                    writerEmail: res?.data?.writerEmail,
+                    writerName: res?.data?.writerName
+                })
+            })
             .catch(err => console.error(err))
     }, [])
 
@@ -27,47 +37,40 @@ const Read = () => {
         })
     }
 
-    // const save =  () => {
-    //     RegisterAPI(board)
-    //         .then(res => {
-    //             console.log(res)
-    //             if (res.status === 200) {
-    //                 alert('게시글 등록 완료')
-    //                 navigate('/')
-    //             }
-    //         })
-    //         .catch(err => console.error(err))
-    // }
-
     const backList = async () => {
         await navigate('/')
+    }
+
+    const modifyButton = () => {
+        navigate(`/modify/${idx}`)
     }
 
     return (
         <>
             <div>
                 <span>제목</span>
-                <input type="text" name="title" value={title} onChange={onChange} />
+                <input type="text" name="title" value={title} onChange={onChange} disabled={true} />
             </div>
             <br />
             <div>
                 <span>작성자</span>
-                <input type="text" name="writerName" value={writerName} onChange={onChange} />
+                <input type="text" name="writerName" value={writerName} onChange={onChange} disabled={true} />
             </div>
             <br />
             <div>
                 <span>email</span>
-                <input type="text" name="writerEmail" value={writerEmail} onChange={onChange} />
+                <input type="text" name="writerEmail" value={writerEmail} onChange={onChange} disabled={true} />
             </div>
             <br/>
             <div>
                 <span>내용</span>
-                <textarea name="content" cols="30" rows="10" value={content} onChange={onChange} />
+                <textarea name="content" cols="30" rows="10" value={content} onChange={onChange} disabled={true}/>
             </div>
             <br/>
             <div>
                 {/*<button onClick={save}>저장</button>*/}
-                <button onClick={backList}>취소</button>
+                <button onClick={modifyButton}>수정</button>
+                <button onClick={backList}>뒤로</button>
             </div>
         </>
     )
